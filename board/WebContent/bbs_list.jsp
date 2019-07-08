@@ -14,6 +14,7 @@
 </script>
 </head>
 <link href="mystyle.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="bootstrap.min.css" />
 <body>
 <c:if test='${empty user}'>
  <div style ='text-align:right'>

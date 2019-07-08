@@ -3,6 +3,7 @@
 <html><head><title>회원가입</title>
 
 <link href="mystyle.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="ootstrap.min.css" />
 <style>
 table {
   width: 60%;

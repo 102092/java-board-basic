@@ -12,15 +12,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import lab.board.model.BbsDAO;
-import lab.board.model.BbsVO;
+import lab.board.model.ProductDAO;
+import lab.board.model.ProductVO;
 
 
-@WebServlet("/view.do")
-public class BbsViewAction extends HttpServlet {
+@WebServlet("/productview.do")
+public class ProductViewAction extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-    public BbsViewAction() {
+    public ProductViewAction() {
         super();
        
     }
@@ -51,25 +51,24 @@ public class BbsViewAction extends HttpServlet {
 		RequestDispatcher rd = null;
 		PrintWriter out = response.getWriter();
 		
-		BbsDAO dao = new BbsDAO();
-		int bid = Integer.parseInt(request.getParameter("bid"));
-		String page =  request.getParameter("page");
+		ProductDAO dao = new ProductDAO();
+		String proid = request.getParameter("proid");
 		
-		BbsVO articles = null;
-		articles = dao.getArticle(bid);
+		
+		ProductVO article = null;
+		article = dao.getProduct(proid);
 
 		
 		
-		if(articles !=null) {
-			request.setAttribute("article", articles);
-			request.setAttribute("bid", new Integer(bid));
-			request.setAttribute("page", new Integer(page));
-			rd = sc.getRequestDispatcher("/bbs_view.jsp");
+		if(article !=null) {
+			request.setAttribute("article", article);
+			request.setAttribute("proid", proid);
+			rd = sc.getRequestDispatcher("/product_view.jsp");
 			rd.forward(request, response);
 		}else {
 			out.print("<script>");
-			out.print("alert(\"글 내용 조회 실패\");");
-			out.print("location.href=\"./productlist.do\"");
+			out.print("alert(\"잘못된 경로입니다.\");");
+			out.print("location.href=\"./list.do\"");
 			out.print("</script>");
 		}
 		

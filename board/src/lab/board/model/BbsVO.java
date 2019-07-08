@@ -1,6 +1,7 @@
 package lab.board.model;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.Vector;
 
 public class BbsVO {
@@ -17,7 +18,18 @@ public class BbsVO {
 	private int rcount;
 	private int vcount;
 	protected Vector<CommentVO> comments = new Vector<CommentVO>();
+	private ArrayList<FileInfoVO> files = new ArrayList<FileInfoVO>();
 	
+	public ArrayList<FileInfoVO> getFiles() {
+		return files;
+	}
+
+
+	public void setFiles(ArrayList<FileInfoVO> files) {
+		this.files = files;
+	}
+
+
 	public void addComment(CommentVO a) {
 		comments.add(a);
 	}

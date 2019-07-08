@@ -68,13 +68,13 @@ public class BbsWriteAction extends HttpServlet {
 		
 		//upload 처리
 		bid = dao.getBid();
-		System.out.println("bid전 " +bid);
+		//System.out.println("bid전 " +bid);
 		Collection<Part> parts = request.getParts();
 		for(Part part : parts) {
 			if(part.getContentType() !=null) { 			
 				fileName = part.getSubmittedFileName();
 				fileType = fileName.substring(fileName.lastIndexOf(".")+1);
-				if(fileName != null) {
+				if(fileName != null && fileName.length() > 0) {
 					form.setFileYN("Y");
 					savedFile = fileName.substring(0,fileName.lastIndexOf("."))+"_"+System.currentTimeMillis() + fileName.substring(fileName.lastIndexOf("."));
 					part.write(savedFile);					
@@ -82,7 +82,7 @@ public class BbsWriteAction extends HttpServlet {
 					fileVo.setFilename(fileName);
 					fileVo.setFiletype(fileType);
 					fileVo.setSavedfile(savedFile);
-					System.out.println("bid후 " +bid);
+					//System.out.println("bid후 " +bid);
 					fileVo.setRbid(bid);
 					dao.saveFile(fileVo);
 					

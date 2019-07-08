@@ -185,6 +185,64 @@ public class BbsDAO {
 		}
 		return lists;
 	}
+	
+	public ArrayList<FileInfoVO> getFileList(int rbid){
+		//저장된 파일 리스트 반환
+		ArrayList<FileInfoVO> files = new ArrayList<FileInfoVO>();
+		Connection con = null;
+		PreparedStatement stat = null;
+		String sql = "select * from bbs_file where rbid = ?";
+		ResultSet rs = null;
+		try {
+			con = dbCon();
+			stat = con.prepareStatement(sql);
+			stat.setInt(1, rbid);
+			rs = stat.executeQuery();
+			while(rs.next()) {
+				FileInfoVO file = new FileInfoVO();
+				file.setFid(rs.getInt("fid"));
+				file.setFilename(rs.getString("filename"));
+				file.setFiletype(rs.getString("filetype"));
+				file.setSavedfile(rs.getString("savedfile"));
+				files.add(file);
+			}
+		}catch (Exception e) {
+				e.printStackTrace();
+		}finally{
+				dbClose(con, stat, rs);
+		}
+		return files;
+	}
+	
+	public FileInfoVO getFile(int fid){
+		
+		FileInfoVO file = new FileInfoVO();
+		Connection con = null;
+		PreparedStatement stat = null;
+		String sql = "select * from bbs_file where fid = ?";
+		ResultSet rs = null;
+		try {
+			con = dbCon();
+			stat = con.prepareStatement(sql);
+			stat.setInt(1, fid);
+			rs = stat.executeQuery();
+			while(rs.next()) {
+				file = new FileInfoVO();
+				file.setFid(rs.getInt("fid"));
+				//System.out.println("fid");
+				file.setFilename(rs.getString("filename"));
+				file.setFiletype(rs.getString("filetype"));
+				file.setSavedfile(rs.getString("savedfile"));
+				file.setRbid(rs.getInt("rbid"));
+
+			}
+		}catch (Exception e) {
+				e.printStackTrace();
+		}finally{
+				dbClose(con, stat, rs);
+		}
+		return file;
+	}
 
 	public BbsVO getArticle(int bid) {
 		//글번호 pk로 게시글 내용 조회 리턴
@@ -196,7 +254,7 @@ public class BbsDAO {
 		sql.append("select bid, subject, writer, password, idate, contents, email, fileyn, ip, rcount, vcount ");
 		sql.append("from bbs where bid = ?" );
 		ResultSet rs = null;
-		ResultSet rs2 = null;
+		//ResultSet rs2 = null;
 		try {
 			con = dbCon();
 			stat = con.prepareStatement(sql.toString(), 
@@ -229,13 +287,14 @@ public class BbsDAO {
 			StringBuffer sql2 = new StringBuffer();
 			sql2.append("select cmid, writer, idate, contents, password, ip from bbs_comment ");
 			sql2.append(" where rbid = ? order by cmid desc ");
-			//stat = con.prepareStatement(sql2.toString());
+			stat = con.prepareStatement(sql2.toString());
 			stat.setInt(1, bid);
-			//rs = stat.executeQuery();
-			
+			rs = stat.executeQuery();
+		
 			while(rs.next()) {
 				CommentVO ba  = new CommentVO();
 				ba.setCmid(rs.getInt("cmid"));
+				//System.out.println(rs.getInt("cmid"));
 				ba.setRbid(bid);
 				ba.setWriter(rs.getString("writer"));
 				ba.setDate(rs.getDate("idate"));
@@ -244,6 +303,9 @@ public class BbsDAO {
 				ba.setIp(rs.getString("ip"));
 				bbs.addComment(ba);
 			}
+			
+			ArrayList<FileInfoVO> files = getFileList(bid);
+			bbs.setFiles(files);
 			
 			
 		}catch (Exception e) {
@@ -306,10 +368,6 @@ public class BbsDAO {
 			stat = con.prepareStatement(sql);
 			stat.setInt(1, rbid);
 			rows += stat.executeUpdate();			
-		
-			
-			
-			
 		}catch (Exception e) {
 				e.printStackTrace();
 		}finally{

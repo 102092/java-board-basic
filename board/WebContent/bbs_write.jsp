@@ -7,6 +7,7 @@
 <title>게시판 글 작성</title>
 </head>
 <link href="mystyle.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="ootstrap.min.css" />
 <body>
 <c:if test='${not empty user}'>
  <div style ='text-align:right'>

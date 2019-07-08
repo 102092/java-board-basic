@@ -17,17 +17,32 @@ import lab.board.model.UserVO;
 @WebServlet("/login.do")
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+	HttpSession session = null;
 
     public LoginServlet() {
         super();
 
     }
-
-
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/html;charset=utf-8");
-		doPost(request, response);
+		PrintWriter out = response.getWriter();
+		String action = request.getParameter("action");
+		session = request.getSession();
+		
+		if(action.equals("logout") && session.getAttribute("user")==null) {
+			out.println("<script>");
+			out.println("alert(\'로그인을 먼저해주세요\')");
+			out.println("location.href=\"./login.jsp\"");
+			out.println("</script>");			
+			
+		}else if(action.equals("logout") && session.getAttribute("user")!=null) {
+			session.invalidate();
+			out.println("<script>");
+			out.println("alert(\'로그아웃 성공\')");
+			out.println("location.href=\"./list.do\"");
+			out.println("</script>");			
+		}
+		
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -38,7 +53,6 @@ public class LoginServlet extends HttpServlet {
 		PrintWriter out = response.getWriter();
 		UserMgrDAO dao = new UserMgrDAO();
 		UserVO user = null;
-		HttpSession session = null;
 		
 		user = dao.loginProc(uid, upwd);	
 		
@@ -53,7 +67,7 @@ public class LoginServlet extends HttpServlet {
 				response.sendRedirect("./list.do");
 			}
 		}else {
-			System.out.println("user.getUserid() !=null");
+			//System.out.println("user.getUserid() !=null");
 			out.println("<script>");
 			out.println("alert(\'로그인 실패\')");
 			out.println("location.href=\"./login.jsp\"");

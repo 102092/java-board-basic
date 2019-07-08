@@ -4,6 +4,7 @@
 <head>
 <title>게시판 글 작성</title>
 <link href="mystyle.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="bootstrap.min.css" />
 <style>
 table {
   width: 30%;

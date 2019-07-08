@@ -46,8 +46,8 @@ public class BbsEditAction extends HttpServlet {
 		
 		BbsVO articles = null;
 		articles = dao.getArticle(bid);
-		System.out.println(pwd);
-		System.out.println(articles.getPassword());
+//		System.out.println(pwd);
+//		System.out.println(articles.getPassword());
 		
 		
 		if(articles!=null && articles.getPassword().equals(pwd) ) {
@@ -57,10 +57,11 @@ public class BbsEditAction extends HttpServlet {
 			rd = sc.getRequestDispatcher("/bbs_edit.jsp");
 			rd.forward(request, response);
 		}else {
-			out.print("<script>");
-			out.print("alert<\"패스 워드 오류\");");
-			out.print("location.href=\"./view.do?bid="+bid+"&page="+page+"\"");
-			out.print("<script>");
+			//System.out.println("패스워드 오류문으로 들어옴");
+			out.println("<script>");
+			out.println("alert(\'패스워드 오류\')");
+			out.println("location.href=\"./view.do?bid="+bid+"&page="+page+"\"");
+			out.println("</script>");
 		}
 		
 		

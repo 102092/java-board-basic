@@ -4,6 +4,8 @@
 
 <html><head><title>게시판 읽기</title></head>
 <link href="mystyle.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="bootstrap.min.css" />
+
 <script>
   function show(cmd, url) {
 	var d = document.getElementById('enter');
@@ -81,6 +83,13 @@
      ${contents2 }
 	 
 	 <br><br>
+	</td></tr>
+	<tr><td colspan=2 height=1 background=./image/dotline.gif></td></tr>
+	<tr>
+	<td>첨부파일 : 
+	 <c:forEach var = "file" items ="${article.files}">
+	 <a href ="./fileview.do?fid=${file.fid}" style="text-align:left;">${file.filename}</a><br>
+	 </c:forEach>
 	</td></tr>
 	<tr><td colspan=2 height=1 background=./image/dotline.gif></td></tr>
 </table>
