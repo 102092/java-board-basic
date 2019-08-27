@@ -1,1 +1,1 @@
-# my-first-board
+# Java를 이용한 게시판 기본 만들기
